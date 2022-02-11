@@ -1,20 +1,7 @@
-#!/usr/bin/env python
-from ast import Global
-import sys
-import re
-import numpy as np
-from player import player,returnPlayer,CreatePopulation,SortPopulation,Tournament
 import random
-from Recombination import uniformCrossover,RECOMBINATION_LIST
+import sys
+from player import player
 
-#randSeed 
-#populationSizeN  
-#stringSizen  
-#probApplyCrossover 
-#probApplyMutation 
-#selectionMethod  
-#tournamentSizek  
-#fitnessFunction  
 def getValueFromSettings(l, s):
     for i in l:
         if i.startswith(s):
@@ -58,44 +45,39 @@ else:
     g = False
     G = False
 
-def main():
 
-    b = returnPlayer()
-    #b.print()
+#Recombination: 
+#Our recombination operator is uniform crossover that will take in two parents and produce 
+#two new children to put in the offspring population. This results in mixing the bits 
+#uniformly from the two parent strings to produce two new children. Note that this 
+#operation is applied with a percentage chance from the settings file. If it is determined not 
+#to apply recombination, the two children are identical to the parents. Ensure that offspring 
+#data structures are set so their fitness will be calculated later if they are changed from the 
+#parents.
 
-    c = returnPlayer()
-    #c.print()
-    
-    #d,f = uniformCrossover(b,c)
-    d,f = RECOMBINATION_LIST[0](b,c)
-    #d.print()
-    #f.print()
-
-    #print("#######################################")
-    #l = CreatePopulation(50,50)
-    #for i in l:
-    #    i.print()
-    #print(len(l))
-    #print("#######################################")
-    #print("#######################################")
-    #print("#######################################")
-    #lsort = SortPopulation(l)
-    #for i in lsort:
-    #    i.print()
-    #l = [b,c,d,f]
-    l = [returnPlayer(),returnPlayer()]#,returnPlayer(),returnPlayer()]
-    for i in l:
-        i.print()
-        print(i)
-    print("#######################################") 
-    s1 = Tournament(l,uniformCrossover,tournamentSizek)
-    for i in s1:
-        print(i.print())
-        print(i)
-
-    
-    print("end")
+def uniformCrossover(p1,p2,mutate = True) -> player:
+    if g or G:
+        print("recombination")
+    num = random.random()
+    if num < probApplyCrossover:
+        print("crossover")
+        #apply crossover
+        l1 = []
+        l2 = []
+        for i in range(len(p1.l)):
+            num = random.random()
+            if num < .5:
+                l1.append(p1.l[i])
+                l2.append(p2.l[i])
+            else:
+                l2.append(p1.l[i])
+                l1.append(p2.l[i])
+        #TODO:add MutatePlayer, might be able to just make it use lists 
+        return player(l = l1),player(l = l2)
+    else:
+        print("no crossover")
+        return p1,p2
 
 
 
-main()
+RECOMBINATION_LIST = [uniformCrossover]
