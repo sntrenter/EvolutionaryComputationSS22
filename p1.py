@@ -3,7 +3,7 @@ from ast import Global
 import sys
 import re
 import numpy as np
-from player import player,returnPlayer,CreatePopulation,SortPopulation,Tournament
+from player import player,returnPlayer,CreatePopulation,SortPopulation,Tournament,ElitismReplacement
 import random
 from Recombination import uniformCrossover,RECOMBINATION_LIST
 
@@ -58,42 +58,33 @@ else:
     g = False
     G = False
 
+def printGeneration(population):
+    population = SortPopulation(population)
+    #print("len: ",len(population))
+    print("Most Fit")
+    population[0].print()
+    print("least fit")
+    population[-1].print()
+    allfit = 0
+    for i in population:
+        allfit += i.fit
+    print("avg fit: ",allfit/len(population))
+
 def main():
+    generation = 0
+    population = CreatePopulation(populationSizeN,stringSizen)
+    population = SortPopulation(population)
 
-    b = returnPlayer()
-    #b.print()
+    while generation < 30:
+        print("############################################################")
+        print("Generation: ", generation)
+        generation += 1
+        printGeneration(population)
+        population = ElitismReplacement(population,49,uniformCrossover,tournamentSizek)
+        print("############################################################")
 
-    c = returnPlayer()
-    #c.print()
-    
-    #d,f = uniformCrossover(b,c)
-    d,f = RECOMBINATION_LIST[0](b,c)
-    #d.print()
-    #f.print()
 
-    #print("#######################################")
-    #l = CreatePopulation(50,50)
-    #for i in l:
-    #    i.print()
-    #print(len(l))
-    #print("#######################################")
-    #print("#######################################")
-    #print("#######################################")
-    #lsort = SortPopulation(l)
-    #for i in lsort:
-    #    i.print()
-    #l = [b,c,d,f]
-    l = [returnPlayer(),returnPlayer()]#,returnPlayer(),returnPlayer()]
-    for i in l:
-        i.print()
-        print(i)
-    print("#######################################") 
-    s1 = Tournament(l,uniformCrossover,tournamentSizek)
-    for i in s1:
-        print(i.print())
-        print(i)
 
-    
     print("end")
 
 

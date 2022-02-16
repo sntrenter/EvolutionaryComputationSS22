@@ -1,6 +1,6 @@
 import random
 import sys
-from player import player
+from player import player,MutatePlayer
 
 def getValueFromSettings(l, s):
     for i in l:
@@ -46,21 +46,13 @@ else:
     G = False
 
 
-#Recombination: 
-#Our recombination operator is uniform crossover that will take in two parents and produce 
-#two new children to put in the offspring population. This results in mixing the bits 
-#uniformly from the two parent strings to produce two new children. Note that this 
-#operation is applied with a percentage chance from the settings file. If it is determined not 
-#to apply recombination, the two children are identical to the parents. Ensure that offspring 
-#data structures are set so their fitness will be calculated later if they are changed from the 
-#parents.
-
 def uniformCrossover(p1,p2,mutate = True) -> player:
     if g or G:
-        print("recombination")
+        #print("recombination")
+        pass
     num = random.random()
     if num < probApplyCrossover:
-        print("crossover")
+        #print("crossover")
         #apply crossover
         l1 = []
         l2 = []
@@ -73,9 +65,9 @@ def uniformCrossover(p1,p2,mutate = True) -> player:
                 l2.append(p1.l[i])
                 l1.append(p2.l[i])
         #TODO:add MutatePlayer, might be able to just make it use lists 
-        return player(l = l1),player(l = l2)
+        return MutatePlayer(player(l = l1)),MutatePlayer(player(l = l2))
     else:
-        print("no crossover")
+        #print("no crossover")
         return p1,p2
 
 
