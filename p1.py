@@ -3,60 +3,146 @@ from ast import Global
 import sys
 import re
 import numpy as np
-from player import player,returnPlayer,CreatePopulation,SortPopulation,Tournament,ElitismReplacement
+from player import MutatePlayer, player, returnPlayer, CreatePopulation, SortPopulation, Tournament, ElitismReplacement
 import random
-from Recombination import uniformCrossover,RECOMBINATION_LIST
+from Recombination import uniformCrossover, RECOMBINATION_LIST
 
-#randSeed 
-#populationSizeN  
-#stringSizen  
-#probApplyCrossover 
-#probApplyMutation 
-#selectionMethod  
-#tournamentSizek  
-#fitnessFunction  
+
 def getValueFromSettings(l, s):
     for i in l:
         if i.startswith(s):
+            #print(s + ":" + i.split(" ")[1])
             return float(i.split(" ")[1])
+
+
+randSeed = 123
+populationSizeN = 100
+stringSizen = 10
+probApplyCrossover = 0.6
+probApplyMutation = 1.0
+selectionMethod = 0
+tournamentSizek = 2
+fitnessFunction = 0
+h = False
+g = False
+G = False
+
+
 if len(sys.argv) != 1:
     for i in sys.argv:
         if re.search(r"^[\w,\s-]+\.[A-Za-z]{3}$", i):
+            print("attempting to parse varialbes from "+ i)
             with open(i) as f:
                 paramlist = list(f)
-            randSeed = getValueFromSettings(paramlist, "randSeed")
-            populationSizeN = getValueFromSettings(
-                paramlist, "populationSizeN")
-            stringSizen = getValueFromSettings(paramlist, "stringSizen")
-            probApplyCrossover = getValueFromSettings(
-                paramlist, "probApplyCrossover")
-            probApplyMutation = getValueFromSettings(
-                paramlist, "probApplyMutation")
-            selectionMethod = getValueFromSettings(
-                paramlist, "selectionMethod")
-            tournamentSizek = getValueFromSettings(
-                paramlist, "tournamentSizek")
-            fitnessFunction = getValueFromSettings(
-                paramlist, "fitnessFunction")
+            randSeed = int(getValueFromSettings(paramlist, "randSeed"))
+            populationSizeN = int(getValueFromSettings(
+                paramlist, "populationSizeN"))
+            stringSizen = int(getValueFromSettings(paramlist, "stringSizen"))
+            probApplyCrossover = float(getValueFromSettings(
+                paramlist, "probApplyCrossover"))
+            probApplyMutation = float(getValueFromSettings(
+                paramlist, "probApplyMutation"))
+            selectionMethod = int(getValueFromSettings(
+                paramlist, "selectionMethod"))
+            tournamentSizek = int(getValueFromSettings(
+                paramlist, "tournamentSizek"))
+            fitnessFunction = int(getValueFromSettings(
+                paramlist, "fitnessFunction"))
         if i == "-h":
             h = True
-            print("TODO:help")
+        else:
+            h = False
         if i == "-g":
             g = True
+        else:
+            g = False
         if i == "-G":
             G = True
-else:
-    randSeed = 123
-    populationSizeN = 100
-    stringSizen = 50
-    probApplyCrossover = 0.6
-    probApplyMutation = 1.0
-    selectionMethod = 0
-    tournamentSizek = 2
-    fitnessFunction = 0
-    h = False
-    g = False
-    G = False
+        else:
+            G = False
+try:
+    randSeed
+    populationSizeN
+    stringSizen
+    probApplyCrossover
+    probApplyMutation
+    selectionMethod
+    tournamentSizek
+    fitnessFunction
+    h
+    g
+    G
+except NameError:
+    print("It seems that something wasn't defined properly")
+    exit()
+
+
+print("randSeed: " + str(randSeed))
+print("populationSizeN: " + str(populationSizeN))
+print("stringSizen: " + str(stringSizen))
+print("probApplyCrossover: " + str(probApplyCrossover))
+print("probApplyMutation: " + str(probApplyMutation))
+print("selectionMethod: " + str(selectionMethod))
+print("tournamentSizek: " + str(tournamentSizek))
+print("fitnessFunction: " + str(fitnessFunction))
+print("h: " + str(h))
+print("g: " + str(g))
+print("G: " + str(G))
+
+
+
+def main():
+
+    if h:
+        helpInfo()
+    if g:
+        print("minor logging mode enabled")
+    if G:
+        print("advanced logging enabled")
+    #avgfit = []
+    generation = 0
+    population = CreatePopulation(populationSizeN, stringSizen)
+    population = SortPopulation(population)
+
+    while population[0].fit != stringSizen:  # generation < 1 and
+        print("############################################################")
+        print("Generation: ", generation)
+        generation += 1
+        printGeneration(population)
+        fit = 0
+        for i in population:
+            fit += i.fit
+        #avgfit.append(fit/len(population)) This would cause it to end early when not needed
+        #if not failsafe(avgfit):           Will implement when needed :) 
+        #    break
+        population = ElitismReplacement(
+            population, len(population) - 1, uniformCrossover, tournamentSizek, mutate=probApplyMutation, g=g, G=G)
+        print("############################################################")
+    print("best individual at end of simulation")
+    population[0].print()
+    #print(avgfit)
+    #print(bestfit)
+    print()
+    print()
+    print()
+    #print("Printing whole population")
+    # for i in population:
+    #    i.print()
+
+    print("end")
+
+
+def helpInfo():
+    print("help...")
+    print("written in python 3.8.10 but should work in most 3+ version")
+    print("the generations will stop when the top player has reached a fitness of stringSizen")
+    print("can use command line args but also supports the use of a manually setting variables")
+    print("you may manually set the variables near the top of the script if desired")
+    print("setting file will override any preset variables")
+    print("the script should exit if a variable is not set properly")
+    print("EXITING...")
+    exit()
+
 
 def printGeneration(population):
     population = SortPopulation(population)
@@ -68,25 +154,14 @@ def printGeneration(population):
     allfit = 0
     for i in population:
         allfit += i.fit
-    print("avg fit: ",allfit/len(population))
+    print("avg fit: ", allfit/len(population))
 
-def main():
-    generation = 0
-    population = CreatePopulation(populationSizeN,stringSizen)
-    population = SortPopulation(population)
-
-    while generation < 30:
-        print("############################################################")
-        print("Generation: ", generation)
-        generation += 1
-        printGeneration(population)
-        population = ElitismReplacement(population,49,uniformCrossover,tournamentSizek)
-        print("############################################################")
-
-
-
-    print("end")
-
-
-
+def failsafe(avgfit):
+    if len(avgfit) <= 2:
+        return True
+    if len(avgfit) > 2 and avgfit[-1] > avgfit[-2]:
+        return True
+    print("breaking due to avgfit")
+    return False
+# test()
 main()
