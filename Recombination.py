@@ -64,14 +64,14 @@ def uniformCrossover(p1,p2,probApplyCrossover = .6,mutate = 1.0,g = False,G = Fa
             else:
                 l2.append(p1.l[i])
                 l1.append(p2.l[i])
-        #TODO:add MutatePlayer, might be able to just make it use lists 
         mutnum = random.random()
         if mutnum < mutate:
-            return MutatePlayer(player(l = l1)),MutatePlayer(player(l = l2))
+            return MutatePlayer(player(l = l1),g,G),MutatePlayer(player(l = l2),g,G)
         else:
             return player(l = l1),player(l = l2)
     else:
-        #print("no crossover")
+        if g or G:
+            print("no crossover")
         return p1,p2
 
 

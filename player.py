@@ -40,36 +40,47 @@ def CreatePopulation(popSize,lsize):
 def SortPopulation(pop):
     return sorted(pop, key=lambda x: x.fit,reverse=True)
 
-def Tournament(l,recombination,mutate,k = 2,g = False,G = False):
-    #TODO: print samples to make debugging easier
+def Tournament(l,recombination,crossover,mutate,k = 2,g = False,G = False):
+    if g or G:
+        print("Tournament")
     p1 = SortPopulation(sample(l,k))[0] 
     p2 = SortPopulation(sample(l,k))[0]
-    p1,p2 = recombination(p1,p2,mutate,g = g, G = G)
+    p1,p2 = recombination(p1,p2,crossover,mutate,g = g, G = G)
+    if G:
+        p1.print()
+        p2.print()
+    if g or G:
+        print("End Tournament")
     return p1,p2
 
-def MutatePlayer(p: player):
-    #print("mutate")
+def MutatePlayer(p,g=False,G=False):
+    if g or G:
+        print("mutate")
     lSizeOverN = 1/len(p.l)
     for i in range(len(p.l)):
         ##print(i," ",p.l[i])
         num = random()
         if num < lSizeOverN:
-            #print(num)
+            if G:
+                print("random num",num)
             #print("flip bit")
             if p.l[i] == 1:
-                #print(i," ",p.l[i],"->",0)
+                if G:
+                    print(i," ",p.l[i],"->",0)
                 p.l[i] = 0
             else:
-                #print(i," ",p.l[i],"->",1)
+                if G:
+                    print(i," ",p.l[i],"->",1)
                 p.l[i] = 1
         else:
-            pass
-            #print(i," ",p.l[i])
+            if G:
+                print(num)
+                print(i," ",p.l[i])
     p.fit = sum(p.l)
     #p.print()
     return p
 
-def ElitismReplacement(l,numberToReplace,recombination,k,mutate = 1.0,g = False,G = False):
+def ElitismReplacement(l,numberToReplace,recombination,k,crossover = .6,mutate = 1.0,g = False,G = False):
     if g or G:
         print("start elitism replacement")
     if G:
@@ -82,14 +93,15 @@ def ElitismReplacement(l,numberToReplace,recombination,k,mutate = 1.0,g = False,
         print("start creating offspring")
     newPlayers = []
     while len(newPlayers) < numberToReplace:
-        np1,np2 = Tournament(l,recombination,mutate,k = k)
+        np1,np2 = Tournament(l,recombination,crossover,mutate,k = k,g=g,G=G)
         newPlayers.append(np1)
         newPlayers.append(np2)
     if len(newPlayers) > numberToReplace: #if want to replace an odd number or something
         newPlayers.pop()
-
-    #for i in newPlayers:
-    #    i.print()
+    if G:
+        print("New players")
+        for i in newPlayers:
+            i.print()
     if g or G:
         print("removing the bottom " ,numberToReplace)
     del l[-numberToReplace:] #remove number to replace

@@ -16,8 +16,8 @@ def getValueFromSettings(l, s):
 
 
 randSeed = 123
-populationSizeN = 100
-stringSizen = 10
+populationSizeN = 10
+stringSizen = 3
 probApplyCrossover = 0.6
 probApplyMutation = 1.0
 selectionMethod = 0
@@ -50,16 +50,11 @@ if len(sys.argv) != 1:
                 paramlist, "fitnessFunction"))
         if i == "-h":
             h = True
-        else:
-            h = False
         if i == "-g":
             g = True
-        else:
-            g = False
         if i == "-G":
             G = True
-        else:
-            G = False
+
 try:
     randSeed
     populationSizeN
@@ -116,7 +111,7 @@ def main():
         #if not failsafe(avgfit):           Will implement when needed :) 
         #    break
         population = ElitismReplacement(
-            population, len(population) - 1, uniformCrossover, tournamentSizek, mutate=probApplyMutation, g=g, G=G)
+            population, len(population) - 1, uniformCrossover, tournamentSizek,crossover=probApplyCrossover, mutate=probApplyMutation, g=g, G=G)
         print("############################################################")
     print("best individual at end of simulation")
     population[0].print()
