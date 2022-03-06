@@ -6,7 +6,7 @@ import numpy as np
 from player import MutatePlayer, player, returnPlayer, CreatePopulation, SortPopulation, Tournament, ElitismReplacement
 import random
 from Recombination import uniformCrossover, RECOMBINATION_LIST
-
+from Fitness import FITNESS_LIST
 
 def getValueFromSettings(l, s):
     for i in l:
@@ -16,13 +16,14 @@ def getValueFromSettings(l, s):
 
 
 randSeed = 123
-populationSizeN = 10
-stringSizen = 5
+populationSizeN = 200
+stringSizen = 50
 probApplyCrossover = 0.6
 probApplyMutation = 1.0
 selectionMethod = 0
 tournamentSizek = 2
 fitnessFunction = 0
+crossoverOperator = 0
 h = False
 g = False
 G = False
@@ -48,6 +49,8 @@ if len(sys.argv) != 1:
                 paramlist, "tournamentSizek"))
             fitnessFunction = int(getValueFromSettings(
                 paramlist, "fitnessFunction"))
+            crossoverOperator = int(getValueFromSettings(
+                paramlist, "crossoverOperator"))
         if i == "-h":
             h = True
         if i == "-g":
@@ -64,6 +67,7 @@ try:
     selectionMethod
     tournamentSizek
     fitnessFunction
+    crossoverOperator
     h
     g
     G
@@ -80,10 +84,12 @@ print("probApplyMutation: " + str(probApplyMutation))
 print("selectionMethod: " + str(selectionMethod))
 print("tournamentSizek: " + str(tournamentSizek))
 print("fitnessFunction: " + str(fitnessFunction))
+print("crossoverOperator: " + str(crossoverOperator))
 print("h: " + str(h))
 print("g: " + str(g))
 print("G: " + str(G))
-
+print("Fitness funtion: " + FITNESS_LIST[fitnessFunction].__name__)
+print("Recombination funtion: " + RECOMBINATION_LIST[crossoverOperator].__name__)
 
 
 def main():
@@ -94,11 +100,25 @@ def main():
         print("minor logging mode enabled")
     if G:
         print("advanced logging enabled")
+
+    #a = returnPlayer(5,fitfunc=FITNESS_LIST[fitnessFunction])
+    #b = returnPlayer(5,fitfunc=FITNESS_LIST[fitnessFunction])
+    #a.print()
+    #b.print()
+    #print()
+    #print()
+    #print()
+    #b.l = [0,1,1,1,1]
+    #b.print()
+    #b.reCalcFitness()
+    #b.print()
+
+    
     #avgfit = []
     generation = 0
-    population = CreatePopulation(populationSizeN, stringSizen)
+    population = CreatePopulation(populationSizeN, stringSizen,fitfunc=FITNESS_LIST[fitnessFunction])
     population = SortPopulation(population)
-
+    
     while population[0].fit != stringSizen:  # generation < 1 and
         print("############################################################")
         print("Generation: ", generation)
@@ -115,14 +135,10 @@ def main():
         print("############################################################")
     print("best individual at end of simulation")
     population[0].print()
-    #print(avgfit)
-    #print(bestfit)
     print()
     print()
     print()
-    #print("Printing whole population")
-    # for i in population:
-    #    i.print()
+    
 
     print("end")
 

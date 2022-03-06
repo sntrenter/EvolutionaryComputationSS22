@@ -2,15 +2,21 @@ from random import random,sample
 import numpy as np
 class player:
 
-    def __init__(self,size = 50,l = []):
+    def __init__(self,size = 50,l = [],fitfunc = None,runFitOnInit = True):
         #TODO: need to implement getters and setters for fitness/mutation
         #self.l = l
         if l == []:
             self.l = np.random.choice([0, 1], size=(size,), p=[.5, .5])
         else:
             self.l = l
-        self.fit = sum(self.l)#will need to change this later
-        self.eval = True#we eval every time
+        self.fitfunc = fitfunc
+
+        if runFitOnInit == True:
+            self.fit = self.fitfunc(self.l)
+            self.eval = True
+        else:
+            self.fit = -1
+            self.eval = False
 
     def print(self):
         print("=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=")
@@ -20,24 +26,27 @@ class player:
         print()
         print("=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=")
 
-    def hello(self):
-        print("hello worl")
+    def reCalcFitness(self):
+        self.fit =  self.fitfunc(self.l)
 
 
 
 
-def returnPlayer(size = 50) -> player:
-    p = player(size = size)
+def returnPlayer(size = 50,fitfunc = None) -> player:
+    p = player(size = size,fitfunc=fitfunc)
     return p
 
 
-def CreatePopulation(popSize,lsize):
+def CreatePopulation(popSize,lsize,fitfunc = None):
     pop = []
     for i in range(int(popSize)):
-        pop.append(player(size=lsize))
+        pop.append(player(size=lsize,fitfunc=fitfunc))
     return pop
 
 def SortPopulation(pop):
+    for i in pop:
+        if i.fit == None:
+            i.reCalcFitness()
     return sorted(pop, key=lambda x: x.fit,reverse=True)
 
 def Tournament(l,recombination,crossover,mutate,k = 2,g = False,G = False):
@@ -76,7 +85,7 @@ def MutatePlayer(p,g=False,G=False):
             if G:
                 print(num)
                 print(i," ",p.l[i])
-    p.fit = sum(p.l)
+    p.fit = p.reCalcFitness()
     #p.print()
     return p
 

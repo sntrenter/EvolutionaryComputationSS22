@@ -1,49 +1,7 @@
 import random
 import sys
 from player import player,MutatePlayer
-#
-#def getValueFromSettings(l, s):
-#    for i in l:
-#        if i.startswith(s):
-#            return float(i.split(" ")[1])
-#if len(sys.argv) != 1:
-#    for i in sys.argv:
-#        if re.search(r"^[\w,\s-]+\.[A-Za-z]{3}$", i):
-#            with open(i) as f:
-#                paramlist = list(f)
-#            randSeed = getValueFromSettings(paramlist, "randSeed")
-#            populationSizeN = getValueFromSettings(
-#                paramlist, "populationSizeN")
-#            stringSizen = getValueFromSettings(paramlist, "stringSizen")
-#            probApplyCrossover = getValueFromSettings(
-#                paramlist, "probApplyCrossover")
-#            probApplyMutation = getValueFromSettings(
-#                paramlist, "probApplyMutation")
-#            selectionMethod = getValueFromSettings(
-#                paramlist, "selectionMethod")
-#            tournamentSizek = getValueFromSettings(
-#                paramlist, "tournamentSizek")
-#            fitnessFunction = getValueFromSettings(
-#                paramlist, "fitnessFunction")
-#        if i == "-h":
-#            h = True
-#            print("TODO:help")
-#        if i == "-g":
-#            g = True
-#        if i == "-G":
-#            G = True
-#else:
-#    randSeed = 123
-#    populationSizeN = 100
-#    stringSizen = 50
-#    probApplyCrossover = 0.6
-#    probApplyMutation = 1.0
-#    selectionMethod = 0
-#    tournamentSizek = 2
-#    fitnessFunction = 0
-#    h = False
-#    g = False
-#    G = False
+
 
 
 def uniformCrossover(p1,p2,probApplyCrossover = .6,mutate = 1.0,g = False,G = False):
@@ -66,9 +24,9 @@ def uniformCrossover(p1,p2,probApplyCrossover = .6,mutate = 1.0,g = False,G = Fa
                 l1.append(p2.l[i])
         mutnum = random.random()
         if mutnum < mutate:
-            return MutatePlayer(player(l = l1),g,G),MutatePlayer(player(l = l2),g,G)
+            return MutatePlayer(player(l = l1,fitfunc=p1.fitfunc),g,G),MutatePlayer(player(l = l2,fitfunc=p1.fitfunc),g,G)
         else:
-            return player(l = l1),player(l = l2)
+            return player(l = l1,fitfunc=p1.fitfunc),player(l = l2,fitfunc=p1.fitfunc)
     else:
         if g or G:
             print("no crossover")
