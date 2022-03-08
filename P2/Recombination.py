@@ -32,6 +32,17 @@ def uniformCrossover(p1,p2,probApplyCrossover = .6,mutate = 1.0,g = False,G = Fa
             print("no crossover")
         return p1,p2
 
+#These don't seem to "need" things like mutations chances and prob apply crossover?
+def onePointCrossover(p1,p2):
+    pass
+
+
+
+def twoPointCrossover(p1,p2):
+    pass
+
+
+
 
 
 RECOMBINATION_LIST = [uniformCrossover]

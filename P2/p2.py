@@ -16,8 +16,8 @@ def getValueFromSettings(l, s):
 
 
 randSeed = 123
-populationSizeN = 200
-stringSizen = 50
+populationSizeN = 40
+stringSizen = 8
 probApplyCrossover = 0.6
 probApplyMutation = 1.0
 selectionMethod = 0
