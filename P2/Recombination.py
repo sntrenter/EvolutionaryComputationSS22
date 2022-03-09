@@ -33,12 +33,13 @@ def uniformCrossover(p1,p2,probApplyCrossover = .6,mutate = 1.0,g = False,G = Fa
         return p1,p2
 
 #These don't seem to "need" things like mutations chances and prob apply crossover?
-def onePointCrossover(p1,p2):
+#They do need all those things
+def onePointCrossover(p1,p2,probApplyCrossover = .6,mutate = 1.0,g = False,G = False):
     pass
 
 
 
-def twoPointCrossover(p1,p2):
+def twoPointCrossover(p1,p2,probApplyCrossover = .6,mutate = 1.0,g = False,G = False):
     pass
 
 
