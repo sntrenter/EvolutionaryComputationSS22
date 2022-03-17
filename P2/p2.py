@@ -16,14 +16,14 @@ def getValueFromSettings(l, s):
 
 
 randSeed = 123
-populationSizeN = 40
+populationSizeN = 10
 stringSizen = 8
 probApplyCrossover = 0.6
 probApplyMutation = 1.0
 selectionMethod = 0
 tournamentSizek = 2
-fitnessFunction = 0
-crossoverOperator = 0
+fitnessFunction = 1
+crossoverOperator = 1
 h = False
 g = False
 G = False
@@ -120,7 +120,7 @@ def main():
     population = SortPopulation(population)
     
     while population[0].fit != stringSizen:  # generation < 1 and
-        print("############################################################")
+        print("###############################")
         print("Generation: ", generation)
         generation += 1
         printGeneration(population)
@@ -132,7 +132,7 @@ def main():
         #    break
         population = ElitismReplacement(
             population, len(population) - 1, uniformCrossover, tournamentSizek,crossover=probApplyCrossover, mutate=probApplyMutation, g=g, G=G)
-        print("############################################################")
+        print("###############################")
     print("best individual at end of simulation")
     population[0].print()
     print()

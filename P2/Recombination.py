@@ -70,9 +70,9 @@ def onePointCrossover(p1,p2,probApplyCrossover = .6,mutate = 1.0,g = False,G = F
 
 def twoPointCrossover(p1,p2,probApplyCrossover = .6,mutate = 1.0,g = False,G = False):
     ###DELETE
-    g,G = True,True
-    probApplyCrossover = 1
-    mutate = 0
+    #g,G = True,True
+    #probApplyCrossover = 1
+    #mutate = 0
     ###
     if g or G:
         print("one point crossover")
@@ -81,14 +81,14 @@ def twoPointCrossover(p1,p2,probApplyCrossover = .6,mutate = 1.0,g = False,G = F
         if g or G:
             print("crossover")
         #apply crossover
-        print("len")
+        #print("len")
         midlist = sorted([random.randint(0,len(p1.l)),random.randint(0,len(p1.l))])
-        print(midlist)
+        #print(midlist)
         mid1,mid2 = midlist[0],midlist[1]
         l1 = p1.l[:mid1] + p2.l[mid1:mid2] + p1.l[mid2:]
-        print(l1)
+        #print(l1)
         l2 = p2.l[:mid1] + p1.l[mid1:mid2] + p2.l[mid2:]
-        print(l2)
+        #print(l2)
 
         mutnum = random.random()
         if mutnum < mutate:
@@ -101,15 +101,13 @@ def twoPointCrossover(p1,p2,probApplyCrossover = .6,mutate = 1.0,g = False,G = F
         return p1,p2
 
 
-p1 = player(10,l=[1,1,1,1,1],fitfunc=oneMax,runFitOnInit=True)
-p2 = player(10,l=[0,0,0,0,0],fitfunc=oneMax,runFitOnInit=True)
-p1.print()
-p2.print()
-
-p3,p4 = twoPointCrossover(p1,p2)
-
-p3.print()
-p4.print()
+#p1 = player(20,l=[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],fitfunc=oneMax,runFitOnInit=True)
+#p2 = player(20,l=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],fitfunc=oneMax,runFitOnInit=True)
+#p1.print()
+#p2.print()
+#p3,p4 = twoPointCrossover(p1,p2)
+#p3.print()
+#p4.print()
 
 
-RECOMBINATION_LIST = [uniformCrossover]
+RECOMBINATION_LIST = [uniformCrossover,onePointCrossover,twoPointCrossover]
