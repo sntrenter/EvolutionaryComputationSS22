@@ -28,6 +28,8 @@ class player:
 
     def reCalcFitness(self):
         self.fit =  self.fitfunc(self.l)
+    def fit(self):
+        return self.fitfunc(self.l)
 
 
 

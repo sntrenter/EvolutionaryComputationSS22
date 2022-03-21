@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-goal = 842
+goal = 1200
 
 lowerBound = 1
 upperBound = 100
@@ -22,7 +22,7 @@ while True:
         plt.plot(n)
         plt.show()
         break;
-    elif num < goal:
+    elif num <= goal:
         print("goal not found UNDER",num,goal,str(upperBound/lowerBound))
         lowerBound = upperBound
         upperBound *= 2
@@ -30,7 +30,7 @@ while True:
         l.append(lowerBound)
         u.append(upperBound)
         n.append(num)
-    elif num > goal:
+    elif num >= goal:
         print("goal not found OVER",num,goal,str(upperBound/lowerBound))
         #lowerbound = same
         over = True

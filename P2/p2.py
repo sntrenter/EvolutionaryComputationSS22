@@ -16,14 +16,14 @@ def getValueFromSettings(l, s):
 
 
 randSeed = 123
-populationSizeN = 10
-stringSizen = 8
+populationSizeN = 25
+stringSizen = 20
 probApplyCrossover = 0.6
 probApplyMutation = 1.0
 selectionMethod = 0
 tournamentSizek = 2
 fitnessFunction = 1
-crossoverOperator = 1
+crossoverOperator = 0
 h = False
 g = False
 G = False
@@ -115,31 +115,72 @@ def main():
 
     
     #avgfit = []
-    generation = 0
-    population = CreatePopulation(populationSizeN, stringSizen,fitfunc=FITNESS_LIST[fitnessFunction])
-    population = SortPopulation(population)
-    
-    while population[0].fit != stringSizen:  # generation < 1 and
-        print("###############################")
-        print("Generation: ", generation)
-        generation += 1
-        printGeneration(population)
-        fit = 0
-        for i in population:
-            fit += i.fit
-        #avgfit.append(fit/len(population)) This would cause it to end early when not needed
-        #if not failsafe(avgfit):           Will implement when needed :) 
-        #    break
-        population = ElitismReplacement(
-            population, len(population) - 1, uniformCrossover, tournamentSizek,crossover=probApplyCrossover, mutate=probApplyMutation, g=g, G=G)
-        print("###############################")
+    #foundMax = False
+    #generation = 0
+    #population = CreatePopulation(populationSizeN, stringSizen,fitfunc=FITNESS_LIST[fitnessFunction])
+    #population = SortPopulation(population)
+    #
+    #while population[0].fit != stringSizen:  # generation < 1 and
+    #    print("###############################")
+    #    print("Generation: ", generation)
+    #    generation += 1
+    #    printGeneration(population)
+    #    fit = 0
+    #    for i in population:
+    #        fit += i.fit
+    #    #avgfit.append(fit/len(population)) This would cause it to end early when not needed
+    #    #if not failsafe(avgfit):           Will implement when needed :) 
+    #    #    break
+    #    population = ElitismReplacement(
+    #        population, len(population) - 1, uniformCrossover, tournamentSizek,crossover=probApplyCrossover, mutate=probApplyMutation, g=g, G=G)
+    #    print("###############################")
+    #print("best individual at end of simulation")
+    #population[0].print()
+    #print()
+    #print()
+    #print()
+
+
+    foundMax = False
+    iteration = 1
+    over = False
+    lowerBound = 0
+    upperBound = populationSizeN * 1
+    num = upperBound
+    while not foundMax:
+        generation = 0
+        population = CreatePopulation(num, stringSizen,fitfunc=FITNESS_LIST[fitnessFunction])
+        population = SortPopulation(population)
+
+        while generation < 200 and population[0].fit != stringSizen:#population[0].fit != stringSizen:  # generation < 1 and
+            print("###############################")
+            print("Generation: ", generation)
+            generation += 1
+            printGeneration(population)
+            fit = 0
+            for i in population:
+                fit += i.fit
+            #avgfit.append(fit/len(population)) This would cause it to end early when not needed
+            #if not failsafe(avgfit):           Will implement when needed :) 
+            #    break
+            population = ElitismReplacement(
+                population, len(population) - 1, uniformCrossover, tournamentSizek,crossover=probApplyCrossover, mutate=probApplyMutation, g=g, G=G)
+            print("###############################")
+        print("end of run")
+        print("iteration",iteration)
+        print("popsize:",populationSizeN*iteration)
+        print("most fit")
+        population[0].print()     
+        #input()
+        if population[0].fit == stringSizen:
+            break
+        pass
+        iteration += 1
+
+    print("iteration",iteration)
+    print("popsize:",populationSizeN*iteration)
     print("best individual at end of simulation")
     population[0].print()
-    print()
-    print()
-    print()
-    
-
     print("end")
 
 
