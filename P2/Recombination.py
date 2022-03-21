@@ -51,9 +51,11 @@ def onePointCrossover(p1,p2,probApplyCrossover = .6,mutate = 1.0,g = False,G = F
         #print(mid)
         #print(len(p1.l))
 
-        l1 = p1.l[:mid] + p2.l[mid:]
+        #l1 = p1.l[:mid] + p2.l[mid:]
+        l1 = [*p1.l[:mid],*p2.l[mid:]]
         #print(l1)
-        l2 = p2.l[:mid] + p1.l[mid:]
+        #l2 = p2.l[:mid] + p1.l[mid:]
+        l2 = [*p2.l[:mid],*p1.l[mid:]]
         #print(l2)
 
         mutnum = random.random()
@@ -85,9 +87,11 @@ def twoPointCrossover(p1,p2,probApplyCrossover = .6,mutate = 1.0,g = False,G = F
         midlist = sorted([random.randint(0,len(p1.l)),random.randint(0,len(p1.l))])
         #print(midlist)
         mid1,mid2 = midlist[0],midlist[1]
-        l1 = p1.l[:mid1] + p2.l[mid1:mid2] + p1.l[mid2:]
+        #l1 = p1.l[:mid1] + p2.l[mid1:mid2] + p1.l[mid2:]
+        l1 = [*p1.l[:mid1],*p2.l[mid1:mid2],*p1.l[mid2:]]
         #print(l1)
-        l2 = p2.l[:mid1] + p1.l[mid1:mid2] + p2.l[mid2:]
+        #l2 = p2.l[:mid1] + p1.l[mid1:mid2] + p2.l[mid2:]
+        l2 = [*p2.l[:mid1],*p1.l[mid1:mid2],*p2.l[mid2:]]
         #print(l2)
 
         mutnum = random.random()
