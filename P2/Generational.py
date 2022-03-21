@@ -14,9 +14,9 @@ def Generational(populationSizeN,stringSizen,fitnessFunction,crossoverOperator,t
         print("Generation: ", generation)
         generation += 1
         printGeneration(population)
-        fit = 0
-        for i in population:
-            fit += i.fit
+        #fit = 0
+        #for i in population:
+        #    fit += i.fit
         #avgfit.append(fit/len(population)) This would cause it to end early when not needed
         #if not failsafe(avgfit):           Will implement when needed :) 
         #    break

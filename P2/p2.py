@@ -17,8 +17,8 @@ def getValueFromSettings(l, s):
 
 
 randSeed = 123
-populationSizeN = 10
-stringSizen = 5
+populationSizeN = 100
+stringSizen = 50
 probApplyCrossover = 0.6
 probApplyMutation = 1.0
 selectionMethod = 0
@@ -122,6 +122,8 @@ def main():
         print("Running Generational Mode...")
         Generational(populationSizeN,stringSizen,FITNESS_LIST[fitnessFunction],RECOMBINATION_LIST[crossoverOperator],tournamentSizek,probApplyCrossover,probApplyMutation,g,G)
 
+    if(runmode == 1):
+        print("Running in Bisection Mode...")
 
 
 

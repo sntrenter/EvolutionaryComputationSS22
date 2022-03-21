@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-goal = 1842
+goal = 1200
 
 
 lowerBound = 1
@@ -11,7 +11,7 @@ u = []
 n = []
 
 
-over = False
+#over = False
 
 #if upper and lower bound ar within 10% you can pick the uper bound
 
@@ -35,7 +35,7 @@ while True:
     elif num >= goal:
         print("goal not found OVER",num,goal,str(upperBound/lowerBound))
         #lowerbound = same
-        over = True
+        #over = True
         upperBound = int((upperBound + lowerBound)/2)
         num = upperBound        
         l.append(lowerBound)
