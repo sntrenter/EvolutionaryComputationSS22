@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
-goal = 1200
+
+goal = 1842
+
 
 lowerBound = 1
 upperBound = 100
