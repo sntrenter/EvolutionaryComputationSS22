@@ -25,3 +25,14 @@ setting properly.
 In short 
 just use ./p2.py to run, you can specify a settings file, or edit the variables 
 at the beginning of the file
+
+### Important files 
+p2.py: main program
+Bisection.py: called from main for bisection
+Fitness.py: holds fitness functions
+Generational.py: called from main for running Generational models
+player.py: the "individual" class
+Recombination.py: recombination operators
+GAP2.pdf: my report portion of this
+
+

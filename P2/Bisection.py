@@ -11,7 +11,6 @@ def Bisection(populationSizeN,stringSizen,fitnessFunction,crossoverOperator,tour
     lowerBound = 1
     upperBound = populationSizeN
     num = upperBound
-    largestnum = upperBound
     l = []
     u = []
     n = []
@@ -74,18 +73,18 @@ def runPop(populationSizeN,stringSizen,fitnessFunction,crossoverOperator,tournam
     else:
         return False
 
-randSeed = 123
-populationSizeN = 10
-stringSizen = 24
-probApplyCrossover = 0.6
-probApplyMutation = 1.0
-selectionMethod = 0
-tournamentSizek = 2
-fitnessFunction = 0
-crossoverOperator = 0
-h = False
-g = False
-G = False
+#randSeed = 123
+#populationSizeN = 10
+#stringSizen = 24
+#probApplyCrossover = 0.6
+#probApplyMutation = 1.0
+#selectionMethod = 0
+#tournamentSizek = 2
+#fitnessFunction = 0
+#crossoverOperator = 0
+#h = False
+#g = False
+#G = False
 
 #Bisection(populationSizeN,stringSizen,oneMax,uniformCrossover,tournamentSizek,probApplyCrossover,probApplyMutation,g,G)
 #input()
