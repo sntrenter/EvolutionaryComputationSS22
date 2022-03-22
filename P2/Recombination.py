@@ -51,6 +51,10 @@ def onePointCrossover(p1,p2,probApplyCrossover = .6,mutate = 1.0,g = False,G = F
         #print(mid)
         #print(len(p1.l))
 
+        #print(type(l1))
+        #print(type(p1.l))
+        #print(type(p2.l))
+
         #l1 = p1.l[:mid] + p2.l[mid:]
         l1 = [*p1.l[:mid],*p2.l[mid:]]
         #print(l1)
@@ -89,6 +93,9 @@ def twoPointCrossover(p1,p2,probApplyCrossover = .6,mutate = 1.0,g = False,G = F
         mid1,mid2 = midlist[0],midlist[1]
         #l1 = p1.l[:mid1] + p2.l[mid1:mid2] + p1.l[mid2:]
         l1 = [*p1.l[:mid1],*p2.l[mid1:mid2],*p1.l[mid2:]]
+
+
+
         #print(l1)
         #l2 = p2.l[:mid1] + p1.l[mid1:mid2] + p2.l[mid2:]
         l2 = [*p2.l[:mid1],*p1.l[mid1:mid2],*p2.l[mid2:]]

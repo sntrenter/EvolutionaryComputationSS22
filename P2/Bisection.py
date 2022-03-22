@@ -4,26 +4,31 @@ from Generational import printGeneration
 from Fitness import oneMax,trapFour
 from Recombination import uniformCrossover,onePointCrossover,twoPointCrossover
 
-Generation_timeout = 500
+Generation_timeout = 300
 
-
-def Bisection(populationSizeN,stringSizen,fitnessFunction,crossoverOperator,tournamentSizek,probApplyCrossover,probApplyMutation,g,G):
+#TODO: optimize to keep track of max successful run to stop backtracking
+def Bisection(populationSizeN,stringSizen,fitnessFunction,crossoverOperator,tournamentSizek,probApplyCrossover,probApplyMutation,g,G,bisectionTimeout=Generation_timeout,graph = False):
     lowerBound = 1
     upperBound = populationSizeN
     num = upperBound
+    largestnum = upperBound
     l = []
     u = []
     n = []
     
     while True:
-        cur_run = runPop(upperBound,stringSizen,fitnessFunction,crossoverOperator,tournamentSizek,probApplyCrossover,probApplyMutation,g,G)
+        if upperBound == 1:
+            print("upper bound converged to 1, very small poplulation sufficient")
+            break
+        cur_run = runPop(upperBound,stringSizen,fitnessFunction,crossoverOperator,tournamentSizek,probApplyCrossover,probApplyMutation,g,G,bisectionTimeout)
         #print(cur_run)
         if float(upperBound/lowerBound) <= 1.05:
             print("Upper and lower bound close, breaking",num,str(upperBound/lowerBound))
-            plt.plot(l)
-            plt.plot(u)
-            plt.plot(n)
-            plt.show()
+            if graph:
+                plt.plot(l)
+                plt.plot(u)
+                plt.plot(n)
+                plt.show()
             break;    
         elif cur_run == False:
             print("Max not Found!",num,str(upperBound/lowerBound))
@@ -39,7 +44,7 @@ def Bisection(populationSizeN,stringSizen,fitnessFunction,crossoverOperator,tour
             #lowerbound = same
             #over = True
             upperBound = int((upperBound + lowerBound)/2)
-            num = upperBound        
+            num = upperBound   
             l.append(lowerBound)
             u.append(upperBound)
             n.append(num)
@@ -49,13 +54,13 @@ def Bisection(populationSizeN,stringSizen,fitnessFunction,crossoverOperator,tour
 
 
 
-def runPop(populationSizeN,stringSizen,fitnessFunction,crossoverOperator,tournamentSizek,probApplyCrossover,probApplyMutation,g,G):
+def runPop(populationSizeN,stringSizen,fitnessFunction,crossoverOperator,tournamentSizek,probApplyCrossover,probApplyMutation,g,G,timeout):
     generation = 0
     population = CreatePopulation(populationSizeN, stringSizen,fitfunc=fitnessFunction)
     population = SortPopulation(population)
     
     #print("###############################")
-    while population[0].fit != stringSizen and generation < Generation_timeout:  # generation < 1 and
+    while population[0].fit != stringSizen and generation < timeout:  # generation < 1 and
         #print("Generation: ", generation)
         generation += 1
         population = ElitismReplacement(
@@ -63,7 +68,7 @@ def runPop(populationSizeN,stringSizen,fitnessFunction,crossoverOperator,tournam
         #print("###############################")
     #print("best individual at end of simulation")
     #population[0].print()
-    print("Generation Found: ",generation)
+    #print("Generation Found: ",generation)
     if population[0].fit == stringSizen:
         return True
     else:
@@ -82,4 +87,16 @@ h = False
 g = False
 G = False
 
-Bisection(populationSizeN,stringSizen,trapFour,twoPointCrossover,tournamentSizek,probApplyCrossover,probApplyMutation,g,G)
+#Bisection(populationSizeN,stringSizen,oneMax,uniformCrossover,tournamentSizek,probApplyCrossover,probApplyMutation,g,G)
+#input()
+#Bisection(populationSizeN,stringSizen,oneMax,onePointCrossover,tournamentSizek,probApplyCrossover,probApplyMutation,g,G)
+#input()
+#Bisection(populationSizeN,stringSizen,oneMax,twoPointCrossover,tournamentSizek,probApplyCrossover,probApplyMutation,g,G)
+#input()
+
+#Bisection(populationSizeN,stringSizen,trapFour,uniformCrossover,tournamentSizek,probApplyCrossover,probApplyMutation,g,G)
+#input()
+#Bisection(populationSizeN,stringSizen,trapFour,onePointCrossover,tournamentSizek,probApplyCrossover,probApplyMutation,g,G)
+#input()
+#Bisection(populationSizeN,stringSizen,trapFour,twoPointCrossover,tournamentSizek,probApplyCrossover,probApplyMutation,g,G)
+#input()

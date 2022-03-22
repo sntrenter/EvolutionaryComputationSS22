@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+#Sam Trenter
 from ast import Global
 import sys
 import re
@@ -8,6 +9,10 @@ import random
 from Recombination import uniformCrossover, RECOMBINATION_LIST
 from Fitness import FITNESS_LIST
 from Generational import Generational
+from Bisection import Bisection
+
+
+
 
 def getValueFromSettings(l, s):
     for i in l:
@@ -17,26 +22,28 @@ def getValueFromSettings(l, s):
 
 
 randSeed = 123
-populationSizeN = 100
-stringSizen = 50
+populationSizeN = 10
+stringSizen = 12
 probApplyCrossover = 0.6
 probApplyMutation = 1.0
 selectionMethod = 0
 tournamentSizek = 2
-fitnessFunction = 0
-crossoverOperator = 0
+fitnessFunction = 1
+crossoverOperator = 1
 h = False
 g = False
 G = False
-###add below to settingsfile
-runmode = 0
-
+runmode = 1
+bisectionTimeout = 300
+# add below to settingsfile
+pauseAtBeginning = False #this just shows you all variables at beginning
+graphing = False
 
 
 if len(sys.argv) != 1:
     for i in sys.argv:
         if re.search(r"^[\w,\s-]+\.[A-Za-z]{3}$", i):
-            print("attempting to parse varialbes from "+ i)
+            print("attempting to parse varialbes from " + i)
             with open(i) as f:
                 paramlist = list(f)
             randSeed = int(getValueFromSettings(paramlist, "randSeed"))
@@ -55,12 +62,18 @@ if len(sys.argv) != 1:
                 paramlist, "fitnessFunction"))
             crossoverOperator = int(getValueFromSettings(
                 paramlist, "crossoverOperator"))
+            runmode = int(getValueFromSettings(
+                paramlist, "runmode"))
+            bisectionTimeout = int(getValueFromSettings(
+                paramlist, "bisectionTimeout"))
         if i == "-h":
             h = True
         if i == "-g":
             g = True
         if i == "-G":
             G = True
+        if i == "-p":
+            pauseAtBeginning = True
 
 try:
     randSeed
@@ -93,11 +106,14 @@ print("h: " + str(h))
 print("g: " + str(g))
 print("G: " + str(G))
 print("Fitness funtion: " + FITNESS_LIST[fitnessFunction].__name__)
-print("Recombination funtion: " + RECOMBINATION_LIST[crossoverOperator].__name__)
-
+print("Recombination funtion: " +
+      RECOMBINATION_LIST[crossoverOperator].__name__)
+print("runmode: " + str(runmode))
+print("bisectionTimeout: " + str(bisectionTimeout))
 
 def main():
-
+    if pauseAtBeginning:
+        input("press any key to continue...")
     if h:
         helpInfo()
     if g:
@@ -107,26 +123,25 @@ def main():
 
     #a = returnPlayer(5,fitfunc=FITNESS_LIST[fitnessFunction])
     #b = returnPlayer(5,fitfunc=FITNESS_LIST[fitnessFunction])
-    #a.print()
-    #b.print()
-    #print()
-    #print()
-    #print()
+    # a.print()
+    # b.print()
+    # print()
+    # print()
+    # print()
     #b.l = [0,1,1,1,1]
-    #b.print()
-    #b.reCalcFitness()
-    #b.print()
+    # b.print()
+    # b.reCalcFitness()
+    # b.print()
 
-    
     if(runmode == 0):
         print("Running Generational Mode...")
-        Generational(populationSizeN,stringSizen,FITNESS_LIST[fitnessFunction],RECOMBINATION_LIST[crossoverOperator],tournamentSizek,probApplyCrossover,probApplyMutation,g,G)
+        Generational(populationSizeN, stringSizen, FITNESS_LIST[fitnessFunction], RECOMBINATION_LIST[
+                     crossoverOperator], tournamentSizek, probApplyCrossover, probApplyMutation, g, G)
 
     if(runmode == 1):
         print("Running in Bisection Mode...")
-
-
-
+        Bisection(populationSizeN, stringSizen, FITNESS_LIST[fitnessFunction], RECOMBINATION_LIST[crossoverOperator],
+                  tournamentSizek, probApplyCrossover, probApplyMutation, g, G, bisectionTimeout=bisectionTimeout,graph = graphing)
 
 
 def helpInfo():
@@ -153,6 +168,7 @@ def printGeneration(population):
         allfit += i.fit
     print("avg fit: ", allfit/len(population))
 
+
 def failsafe(avgfit):
     if len(avgfit) <= 2:
         return True
@@ -160,5 +176,7 @@ def failsafe(avgfit):
         return True
     print("breaking due to avgfit")
     return False
+
+
 # test()
 main()
