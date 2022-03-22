@@ -13,3 +13,15 @@ when the values are 5% appart we break and print the values of the string size, 
 we found to work for it. 
 The population can be inconsistant but it would take to long to get a good average for 
 larger problems.  
+
+I also added a small graphing option, the flag is only avalible in the main program (p2.py), 
+set graphing = True for it to graph your bisection results. 
+
+also added pauseAtBeginning to check variables before running to make sure things were 
+setting properly. 
+
+
+### 
+In short 
+just use ./p2.py to run, you can specify a settings file, or edit the variables 
+at the beginning of the file
