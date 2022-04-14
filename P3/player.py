@@ -1,3 +1,4 @@
+from msilib.schema import Error
 from random import random,sample
 import numpy as np
 from Fitness import oneMax
@@ -141,12 +142,21 @@ def ElitismReplacement(l,numberToReplace,recombination,k,crossover = .6,mutate =
         print("returning from elitism replacement (returning sorted population")
     return SortPopulation(l)
 
-
+def HammingDistance(p1,p2):
+    if len(p1.l) != len(p2.l):
+        print("LISTS AREN'T THE SAME SIZE")
+        raise
+    d = 0
+    for i in range(len(p1.l)):
+        if p1.l[i] != p2.l[i]:
+            d+=1
+    return d
 
 
 if __name__ == "__main__":
-    p1 = player(5,fitfunc=oneMax)
+    p1 = player(5,fitfunc=oneMax) 
     p2 = player(5,fitfunc=oneMax)
     p1.print()
     p2.print()
+    print(HammingDistance(p1,p2))
     pass

@@ -10,6 +10,7 @@ from Recombination import uniformCrossover, RECOMBINATION_LIST
 from Fitness import FITNESS_LIST
 from Generational import Generational
 from Bisection import Bisection
+from DiversityPreservation import DiversityPreservation
 
 
 
@@ -23,17 +24,17 @@ def getValueFromSettings(l, s):
 
 randSeed = 123
 populationSizeN = 10
-stringSizen = 12
+stringSizen = 5
 probApplyCrossover = 0.6
 probApplyMutation = 1.0
 selectionMethod = 0
 tournamentSizek = 2
-fitnessFunction = 1
+fitnessFunction = 0
 crossoverOperator = 1
 h = False
 g = False
 G = False
-runmode = 1
+runmode = 2
 bisectionTimeout = 300
 # add below to settingsfile
 pauseAtBeginning = False #this just shows you all variables at beginning
@@ -142,6 +143,11 @@ def main():
         print("Running in Bisection Mode...")
         Bisection(populationSizeN, stringSizen, FITNESS_LIST[fitnessFunction], RECOMBINATION_LIST[crossoverOperator],
                   tournamentSizek, probApplyCrossover, probApplyMutation, g, G, bisectionTimeout=bisectionTimeout,graph = graphing)
+
+    if(runmode == 2):
+        print("Running in diversity preservation mode...")
+        DiversityPreservation(populationSizeN, stringSizen, FITNESS_LIST[fitnessFunction], RECOMBINATION_LIST[
+                     crossoverOperator], tournamentSizek, probApplyCrossover, probApplyMutation, g, G,graphing=graphing)
 
 
 def helpInfo():
