@@ -23,22 +23,24 @@ def getValueFromSettings(l, s):
 
 
 randSeed = 123
-populationSizeN = 10
-stringSizen = 5
-probApplyCrossover = 0.6
+populationSizeN = 100
+stringSizen = 20
+probApplyCrossover = 1
 probApplyMutation = 1.0
 selectionMethod = 0
 tournamentSizek = 2
-fitnessFunction = 0
-crossoverOperator = 1
+fitnessFunction = 2
+crossoverOperator = 0
 h = False
 g = False
 G = False
 runmode = 2
-bisectionTimeout = 300
+bisectionTimeout = 1000
 # add below to settingsfile
 pauseAtBeginning = False #this just shows you all variables at beginning
 graphing = True
+w = 25 #int(stringSizen * 1)
+replacementAmount=populationSizeN / 1
 
 
 if len(sys.argv) != 1:
@@ -111,6 +113,7 @@ print("Recombination funtion: " +
       RECOMBINATION_LIST[crossoverOperator].__name__)
 print("runmode: " + str(runmode))
 print("bisectionTimeout: " + str(bisectionTimeout))
+print("w: " + str(w))
 
 def main():
     if pauseAtBeginning:
@@ -147,7 +150,7 @@ def main():
     if(runmode == 2):
         print("Running in diversity preservation mode...")
         DiversityPreservation(populationSizeN, stringSizen, FITNESS_LIST[fitnessFunction], RECOMBINATION_LIST[
-                     crossoverOperator], tournamentSizek, probApplyCrossover, probApplyMutation, g, G,graphing=graphing)
+                     crossoverOperator], tournamentSizek, probApplyCrossover, probApplyMutation, g, G,graphing=graphing,w=w,replacementAmount=replacementAmount)
 
 
 def helpInfo():

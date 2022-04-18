@@ -82,4 +82,4 @@ if __name__ == "__main__":
     print(interleavedTrap4(tlist))
 
 
-FITNESS_LIST = [oneMax,trapFour]
+FITNESS_LIST = [oneMax,trapFour,interleavedTrap4]

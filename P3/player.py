@@ -2,6 +2,7 @@ from msilib.schema import Error
 from random import random,sample
 import numpy as np
 from Fitness import oneMax
+from math import inf
 
 class player:
 
@@ -17,22 +18,38 @@ class player:
         self.fitfunc = fitfunc
 
         if runFitOnInit == True:
-            self.fit = self.fitfunc(self.l)
+            self.fit = int(self.fitfunc(self.l))
             self.eval = True
         else:
             self.fit = -1
             self.eval = False
-
+    def printLs(self,l):
+        it = 0 
+        sections = []
+        for i in range(len(l)//4):
+            sec = []
+            for j in range(0,len(l),len(l)//4):
+                sec.append(l[j + it])
+            #print(sec)
+            it += 1
+            sections.append(sec)
+        #print(sections)
+        total = 0
+        for i in sections:
+            for j in i:
+                print(j,end="")
+            print()
     def print(self):
         print("=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=")
         print("fit: ",self.fit)
-        for i in self.l:
-            print(i,end="")
+        #for i in self.l:
+        #    print(i,end="")
+        self.printLs(self.l)
         print()
         print("=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=")
 
     def reCalcFitness(self):
-        self.fit =  self.fitfunc(self.l)
+        self.fit =  int(self.fitfunc(self.l))
     def fit(self):
         return self.fitfunc(self.l)
 
@@ -48,7 +65,7 @@ def CreatePopulation(popSize,lsize,fitfunc = None):
     pop = []
     for i in range(int(popSize)):
         pop.append(player(size=lsize,fitfunc=fitfunc))
-    return pop
+    return SortPopulation(pop)
 
 def SortPopulation(pop):
     for i in pop:
@@ -142,6 +159,68 @@ def ElitismReplacement(l,numberToReplace,recombination,k,crossover = .6,mutate =
         print("returning from elitism replacement (returning sorted population")
     return SortPopulation(l)
 
+def ElitismReplacementDiversityPreservation(l,numberToReplace,recombination,k,crossover = .6,mutate = 1.0,w = 10,g = False,G = False):
+    if g or G:
+        print("start elitism replacement")
+    if G:
+        print("population:")
+        for i in l:
+            i.print()
+    l = SortPopulation(l)
+
+    if g or G:
+        print("start creating offspring")
+    newPlayers = []
+    while len(newPlayers) < numberToReplace:
+        np1,np2 = Tournament(l,recombination,crossover,mutate,k = k,g=g,G=G)
+        newPlayers.append(np1)
+        newPlayers.append(np2)
+    if len(newPlayers) > numberToReplace: #if want to replace an odd number or something
+        newPlayers.pop()
+
+    if G:
+        print("New players")
+        for i in newPlayers:
+            i.print()
+    if g or G:
+        print("removing the bottom " ,numberToReplace)
+
+    #for each new player
+    for i in newPlayers:
+        i.reCalcFitness()
+        #get random group of initial pop
+        testpos = sample(range(0,len(l)),w)
+        #get player from random group with lowest hamming distance from new player
+        curHam = inf
+        curNum = None
+        for n in testpos:
+            if HammingDistance(i,l[n]) < curHam: #I could probably use walrus op here
+                curHam = HammingDistance(i,l[n]) 
+                curNum = n
+        #if newplayer better
+        if i.fit > l[curNum].fit:
+            #replace oldplayer with newplayer
+            #print("Replaced Player")
+            #i.print()
+            #l[curNum].print()
+            #print()
+            l[curNum] = i
+            
+    
+    if g or G:
+        print("added offspring population... ")
+        if G:
+            print("full list:")
+            for i in l:
+                i.print()
+    #print("test")
+    #print(l)
+    if g or G:
+        print("returning from elitism replacement (returning sorted population")
+    return SortPopulation(l)
+
+
+
 def HammingDistance(p1,p2):
     if len(p1.l) != len(p2.l):
         print("LISTS AREN'T THE SAME SIZE")
@@ -154,9 +233,21 @@ def HammingDistance(p1,p2):
 
 
 if __name__ == "__main__":
-    p1 = player(5,fitfunc=oneMax) 
-    p2 = player(5,fitfunc=oneMax)
+    p1 = player(24,fitfunc=oneMax) 
+    p2 = player(24,fitfunc=oneMax)
     p1.print()
     p2.print()
     print(HammingDistance(p1,p2))
-    pass
+    print()
+    print()
+    print()
+    #p1 = CreatePopulation(5,20,oneMax)|
+    #for i in p1:
+    #    i.print()
+    #print("*******************************")
+    #from Recombination import uniformCrossover
+    #p2 = ElitismReplacementDiversityPreservation(p1,4,uniformCrossover,2,w=3)
+    #print("*******************************")
+    #for i in p2:
+    #    i.print()
+    print("EOF")
