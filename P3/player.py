@@ -189,7 +189,10 @@ def ElitismReplacementDiversityPreservation(l,numberToReplace,recombination,k,cr
     for i in newPlayers:
         i.reCalcFitness()
         #get random group of initial pop
-        testpos = sample(range(0,len(l)),w)
+        if w > len(l):
+            testpos = sample(range(0,len(l)),len(l))
+        else:    
+            testpos = sample(range(0,len(l)),w)
         #get player from random group with lowest hamming distance from new player
         curHam = inf
         curNum = None

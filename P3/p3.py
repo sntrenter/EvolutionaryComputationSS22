@@ -10,6 +10,7 @@ from Recombination import uniformCrossover, RECOMBINATION_LIST
 from Fitness import FITNESS_LIST
 from Generational import Generational
 from Bisection import Bisection
+from BisectionRTR import BisectionRTR
 from DiversityPreservation import DiversityPreservation
 
 
@@ -23,24 +24,24 @@ def getValueFromSettings(l, s):
 
 
 randSeed = 123
-populationSizeN = 100
-stringSizen = 20
+populationSizeN = 400
+stringSizen = 1000
 probApplyCrossover = 1
 probApplyMutation = 1.0
 selectionMethod = 0
 tournamentSizek = 2
-fitnessFunction = 2
+fitnessFunction = 0
 crossoverOperator = 0
 h = False
 g = False
 G = False
 runmode = 2
-bisectionTimeout = 1000
+bisectionTimeout = 500
 # add below to settingsfile
 pauseAtBeginning = False #this just shows you all variables at beginning
 graphing = True
 w = 25 #int(stringSizen * 1)
-replacementAmount=populationSizeN / 1
+replacementAmount=populationSizeN 
 
 
 if len(sys.argv) != 1:
@@ -69,6 +70,10 @@ if len(sys.argv) != 1:
                 paramlist, "runmode"))
             bisectionTimeout = int(getValueFromSettings(
                 paramlist, "bisectionTimeout"))
+            replacementAmount = int(getValueFromSettings(
+                paramlist, "replacementAmount"))
+            w = int(getValueFromSettings(
+                paramlist, "w"))
         if i == "-h":
             h = True
         if i == "-g":
@@ -150,6 +155,10 @@ def main():
     if(runmode == 2):
         print("Running in diversity preservation mode...")
         DiversityPreservation(populationSizeN, stringSizen, FITNESS_LIST[fitnessFunction], RECOMBINATION_LIST[
+                     crossoverOperator], tournamentSizek, probApplyCrossover, probApplyMutation, g, G,graphing=graphing,w=w,replacementAmount=replacementAmount)
+    if(runmode == 3):
+        print("Running in diversity preservation mode...")
+        BisectionRTR(populationSizeN, stringSizen, FITNESS_LIST[fitnessFunction], RECOMBINATION_LIST[
                      crossoverOperator], tournamentSizek, probApplyCrossover, probApplyMutation, g, G,graphing=graphing,w=w,replacementAmount=replacementAmount)
 
 
