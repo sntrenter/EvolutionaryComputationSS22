@@ -1,0 +1,40 @@
+    foundMax = False
+    iteration = 1
+    over = False
+    lowerBound = 0
+    upperBound = populationSizeN * 1
+    num = upperBound
+    while not foundMax:
+        generation = 0
+        population = CreatePopulation(num, stringSizen,fitfunc=FITNESS_LIST[fitnessFunction])
+        population = SortPopulation(population)
+
+        while generation < 200 and population[0].fit != stringSizen:#population[0].fit != stringSizen:  # generation < 1 and
+            print("###############################")
+            print("Generation: ", generation)
+            generation += 1
+            printGeneration(population)
+            fit = 0
+            for i in population:
+                fit += i.fit
+            #avgfit.append(fit/len(population)) This would cause it to end early when not needed
+            #if not failsafe(avgfit):           Will implement when needed :) 
+            #    break
+            population = ElitismReplacement(
+                population, len(population) - 1, uniformCrossover, tournamentSizek,crossover=probApplyCrossover, mutate=probApplyMutation, g=g, G=G)
+            print("###############################")
+        print("end of run")
+        print("iteration",iteration)
+        print("popsize:",populationSizeN*iteration)
+        print("most fit")
+        population[0].print()     
+        #input()
+        if population[0].fit == stringSizen:
+            break
+        pass
+        iteration += 1
+        print("iteration",iteration)
+        print("popsize:",populationSizeN*iteration)
+        print("best individual at end of simulation")
+        population[0].print()
+        print("end")
